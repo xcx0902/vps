@@ -1,0 +1,46 @@
+name: Windows Server 2019
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Windows 10 Build
+    runs-on: windows-latest
+    timeout-minutes: 9999
+    
+    steps:
+    - name: Creating Local User
+      run: |
+        Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText $Env:WINDOWS_USER_PASSWORD -Force)
+      env:
+        WINDOWS_USER_PASSWORD: ${{ secrets.WINDOWS_USER_PASSWORD }}
+    - name: Download
+      run: |
+       Invoke-WebRequest https://github.com/RealKoolisw/assets/blob/main/Github-RDP/ngrok.exe?raw=true -OutFile ngrok.exe
+       Invoke-WebRequest https://github.com/RealKoolisw/assets/blob/main/Github-RDP/nssm.exe?raw=true -OutFile nssm.exe
+       Invoke-WebRequest https://raw.githubusercontent.com/RealKoolisw/VirtualMachine-GithubAction/main/resources/ngrok-user.bat -OutFile ngrok-user.bat
+       Invoke-WebRequest https://raw.githubusercontent.com/RealKoolisw/VirtualMachine-GithubAction/main/resources/ngrok-start.bat -OutFile ngrok-start.bat
+       Invoke-WebRequest https://raw.githubusercontent.com/RealKoolisw/VirtualMachine-GithubAction/main/resources/ngrok-loop.bat -OutFile ngrok-loop.bat
+    - name: Copy NSSM & Ngrok to Windows Directory.
+      run: | 
+        copy nssm.exe C:\Windows\System32
+        copy ngrok.exe C:\Windows\System32
+    - name: Auth
+      run: .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    - name: Installing Ngrok Process as a Windows Core Services
+      run: start ngrok-start.bat
+    - name: Enable TS
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+    - name: Enabing Networking Firewall
+      run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+    - name: Setting up RDP TCP UserAuthentication
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    - name: Create Tunnel
+      run: sc start ngrok
+    - name: Connecting Process
+      run: cmd /c ngrok-user.bat
+    - name: Looping Process
+      run: cmd /c ngrok-loop.bat
