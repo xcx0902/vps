@@ -27,7 +27,5 @@ jobs:
     - name: Keep Running Ubuntu System and keepAlive
      # if: ${{ failure() }}
       run: |
-        while: do
-          echo "Hello World!"
-          sleep 1m
-        done
+        wget https://raw.githubusercontent.com/xcx0902/FreeVPS/main/keep.sh
+        bash ./keep.sh
