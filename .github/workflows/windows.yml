@@ -13,7 +13,7 @@ jobs:
       run: |
         Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
         Invoke-WebRequest https://raw.githubusercontent.com/xcx0902/WindowsServerFreeVPS/main/start.bat -OutFile start.bat
-        Invoke-WebRequest https://raw.githubusercontent.com/xcx0902/WindowsServerFreeVPS/main/wallpaper.jpg -OutFile wallpaper.jng
+        Invoke-WebRequest https://raw.githubusercontent.com/xcx0902/WindowsServerFreeVPS/main/wallpaper.jpg -OutFile wallpaper.jpg
         Invoke-WebRequest https://raw.githubusercontent.com/xcx0902/WindowsServerFreeVPS/main/wallpaper.bat -OutFile wallpaper.bat
         Invoke-WebRequest https://raw.githubusercontent.com/xcx0902/WindowsServerFreeVPS/main/loop.ps1 -OutFile loop.ps1
     - name: Mengextract Ngrok File.
