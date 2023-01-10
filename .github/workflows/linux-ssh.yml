@@ -26,4 +26,8 @@ jobs:
         LINUX_USERNAME: ${{ secrets.LINUX_USERNAME }}
     - name: Keep Running Ubuntu System and keepAlive
      # if: ${{ failure() }}
-      run: sleep 1919810h
+      run: |
+        while: do
+          echo "Hello World!"
+          sleep 1m
+        done
