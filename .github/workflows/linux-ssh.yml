@@ -27,6 +27,4 @@ jobs:
         LINUX_USERNAME: ${{ secrets.LINUX_USERNAME }}
     - name: Keep Running Ubuntu System and keepAlive
      # if: ${{ failure() }}
-      run: |
-        wget https://raw.githubusercontent.com/xcx0902/FreeVPS/main/keep.sh
-        bash ./keep.sh
+      run: bash ./keep.sh
