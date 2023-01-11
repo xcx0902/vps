@@ -30,7 +30,7 @@ jobs:
         copy wallpaper.jpg D:\a\wallpaper.jpg
         copy wallpaper.bat D:\a\wallpaper.bat
     - name: Create Ngrok Tunnel
-      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp --region ap 3389"'
+      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp 3389"'
     - name: Connect Windows VM
       run: cmd /c start.bat
     - name: Keep Action Running
