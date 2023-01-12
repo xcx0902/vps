@@ -2,6 +2,8 @@
 #!/bin/bash
 # /home/runner/.ngrok2/ngrok.yml
 
+echo "Setting User & Machine Name"
+
 sudo useradd -m $LINUX_USERNAME
 sudo adduser $LINUX_USERNAME sudo
 echo "$LINUX_USERNAME:$LINUX_USER_PASSWORD" | sudo chpasswd
@@ -9,28 +11,26 @@ sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd
 sudo hostname $LINUX_MACHINE_NAME
 
 if [[ -z "$NGROK_AUTH_TOKEN" ]]; then
-  echo "Please set 'NGROK_AUTH_TOKEN'"
+  echo "ERR: Please set 'NGROK_AUTH_TOKEN'"
   exit 2
 fi
 
 if [[ -z "$LINUX_USER_PASSWORD" ]]; then
-  echo "Please set 'LINUX_USER_PASSWORD' for user: $USER"
+  echo "ERR: Please set 'LINUX_USER_PASSWORD' for user: $USER"
   exit 3
 fi
 
-echo "### Install ngrok ###"
+echo "Install Ngrok"
 
 rm -rf ngrok
-wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip
-unzip ngrok-stable-linux-386.zip
+wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip > /dev/null
+unzip ngrok-stable-linux-386.zip > /dev/null
 chmod +x ./ngrok
 
-echo "### Update user: $USER password ###"
+echo "Update User Password"
 echo -e "$LINUX_USER_PASSWORD\n$LINUX_USER_PASSWORD" | sudo passwd "$USER"
 
-echo "### Start ngrok proxy for 22 port ###"
-
-
+echo "Start Ngrok Proxy"
 rm -f .ngrok.log
 ./ngrok authtoken "$NGROK_AUTH_TOKEN"
 ./ngrok tcp 22 --log ".ngrok.log" &
