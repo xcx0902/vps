@@ -15,7 +15,7 @@ jobs:
 #    - name: If failed, means ok
 #      run: ./not-exist-file.sh it bloke build
     - name: Preparing Linux Environment
-      run: sudo apt-get update
+      run: sudo apt-get update > /dev/null
     - name: Setting Up the Ubuntu Environment
     #  if: ${{ failure() }}
       run: bash linux-ssh.sh
