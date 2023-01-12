@@ -6,6 +6,8 @@ jobs:
     timeout-minutes: 9999999999
 
     steps:
+    - name: Print System Information
+      run: systeminfo
     - name: Download Need Files
       run: |
         Invoke-WebRequest https://raw.githubusercontent.com/xcx0902/FreeVPS/main/ngrok/ngrok.exe -OutFile ngrok.exe
