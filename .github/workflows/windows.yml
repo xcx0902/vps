@@ -9,7 +9,7 @@ jobs:
     - name: Download Need Files
       uses: actions/checkout@v3
     - name: Auth Ngrok
-      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      run: .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     - name: Enable RDP Connect
@@ -18,7 +18,7 @@ jobs:
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - name: Create Ngrok Tunnel
-      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp 3389 --region eu"'
+      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok.exe tcp 3389 --region eu"'
     - name: Print Windows VM IP For Connecting
       run: cmd /c start.bat
     - name: Keep Action Running
