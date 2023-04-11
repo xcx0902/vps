@@ -1,0 +1,25 @@
+name: Windows
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 9999999999
+
+    steps:
+    - name: Download Need Files
+      uses: actions/checkout@v3
+    - name: Auth Ngrok
+      run: .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    - name: Enable RDP Connect
+      run: | 
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    - name: Create Ngrok Tunnel
+      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok.exe tcp 3389 --region eu"'
+    - name: Print Windows VM IP For Connecting
+      run: cmd /c start.bat
+    - name: Keep Action Running
+      run: cmd /c loop.ps1
