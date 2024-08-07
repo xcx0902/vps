@@ -18,7 +18,7 @@ jobs:
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - name: Create Ngrok Tunnel
-      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrokv3.exe tcp 3389 --region jp"'
+      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrokv3.exe tcp 3389 --region in"'
     - name: Print Windows VM IP For Connecting
       run: cmd /c start.bat
     - name: Keep Action Running
